@@ -111,14 +111,14 @@ def flipped_expansion(imgs):
 def load_images_and_grounds():
 
 	# Loading a set of 100 training images
-	root_dir = "data/train/"
+	root_dir = "data/training/"
 
-	image_dir = root_dir + "image/"
+	image_dir = root_dir + "images/"
 	files = os.listdir(image_dir)
 	n = min(1000, len(files)) # Load maximum 1000 images
 	imgs = np.array([load_image(image_dir + files[i]) for i in range(n)]).swapaxes(1,3).swapaxes(2,3)
 
-	image_dir = root_dir + "label/"
+	image_dir = root_dir + "groundtruth/"
 	files = os.listdir(image_dir)
 	n = min(1000, len(files)) # Load maximum 1000 images
 	grounds = [load_image(image_dir + files[i]) for i in range(n)]
@@ -157,14 +157,12 @@ def crop_images_train(end_train, end_validation, imgs, grounds):
 	return train_input, validation_input, train_target, validation_target
 
 
-
 def load_test():
-	root_dir = "data/"
-	image_dir = root_dir + "test/"
-	files = os.listdir(image_dir)
-	n = min(1000, len(files)) # Load maximum 1000 images
-	test_images = [load_image(image_dir + files[i]) for i in range(n)]
-	test_images = np.array(test_images)
+	root_dir = "data/test_set_images/"
+	test_images=[]
+	for i in range(1, 51):
+	    image_filename = root_dir + "test_" + str(i) + "/test_" + str(i) + '.png'
+	    test_images.append(np.array(load_image(image_filename)).swapaxes(0,2).swapaxes(1,2))
 
 	return test_images
 

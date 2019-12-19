@@ -73,4 +73,5 @@ png_dataset_to_tif(selected_target, './UNET/data/train/label')
 png_dataset_to_tif(test_crop, './UNET/data/test') #test is not augmented or randomly selected
 
 # save data to ResNet. Saved data is not augmented because ResNet will augment the data itself
-copy_tree('./dataset/', './ResNet/data/')
+shutil.rmtree('./ResNet/data') # remove folder because copytree destination must not exist
+shutil.copytree('./dataset/', './ResNet/data/')

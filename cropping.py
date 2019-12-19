@@ -1,6 +1,6 @@
 import numpy as np
 import os, sys
-from distutils.dir_util import copy_tree
+import shutil
 
 # helper functions
 def load_image(infilename):
@@ -105,7 +105,8 @@ def crop_dataset(save=True):
         
     # save data to ResNet. Saved data is not cropped because ResNet will crop the data itself
     if save:
-        copy_tree('./dataset/', './ResNet/data/')
+        shutil.rmtree('./ResNet/data') # remove folder because copytree destination must not exist
+        shutil.copytree('./dataset/', './ResNet/data/')
     
     return train_input_crop, target_crop, test_crop
 

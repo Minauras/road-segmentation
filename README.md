@@ -48,7 +48,17 @@ Each net has a specific exectuable in their own folder:
 * [ResNet/run_resnet.py](ResNet/run.py) for ResNet
 * [UNET/unet_run.py](UNET/unet_run.py) for unet
 
-The global executable [run.py](run.py) will generate the test outputs for the best results we could get through all of our tests of the two nets.
+## Running the best model
+The global executable [run.py](run.py) will generate the test outputs for the best results we could get through all of our tests of the two nets. It requires that the model's pth file be downloaded (as it was too big for the submission).
+Please download the pth file from [here](https://drive.google.com/file/d/1V6E3lmDm7x1lg6DBgGgR732iWKyZvbeM/view?usp=sharing) and place it in
+```
+ResNet/results/best_model.pth
+```
+You can then run
+```
+python run.py
+```
+To get our best results
 
 ## Authors
 

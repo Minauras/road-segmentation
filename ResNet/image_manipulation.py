@@ -7,7 +7,6 @@ from torch.autograd import Variable
 from torchvision import transforms
 
 # import Maplotlib
-%matplotlib inline
 import matplotlib.image as mpimg
 
 # import Numpy
@@ -110,61 +109,64 @@ def flipped_expansion(imgs):
 
 def load_images_and_grounds():
 
-	# Loading a set of 100 training images
-	root_dir = "data/training/"
+    # Loading a set of 100 training images
+    root_dir = "data/training/"
 
-	image_dir = root_dir + "images/"
-	files = os.listdir(image_dir)
-	n = min(1000, len(files)) # Load maximum 1000 images
-	imgs = np.array([load_image(image_dir + files[i]) for i in range(n)]).swapaxes(1,3).swapaxes(2,3)
+    image_dir = root_dir + "images/"
+    files = os.listdir(image_dir)
+    n = min(1000, len(files)) # Load maximum 1000 images
+    imgs = np.array([load_image(image_dir + files[i]) for i in range(n)]).swapaxes(1,3).swapaxes(2,3)
 
-	image_dir = root_dir + "groundtruth/"
-	files = os.listdir(image_dir)
-	n = min(1000, len(files)) # Load maximum 1000 images
-	grounds = [load_image(image_dir + files[i]) for i in range(n)]
+    image_dir = root_dir + "groundtruth/"
+    files = os.listdir(image_dir)
+    n = min(1000, len(files)) # Load maximum 1000 images
+    grounds = [load_image(image_dir + files[i]) for i in range(n)]
 
-	print("Successfully loaded the training images and grounds.\n")
+    print("Successfully loaded the training images and grounds.\n")
 
-	imgs = np.array(imgs)
-	grounds = np.array(grounds)
+    imgs = np.array(imgs)
+    grounds = np.array(grounds)
 
-	return imgs, grounds
+    return imgs, grounds
 
 
 def crop_images_train(end_train, end_validation, imgs, grounds):
 
-	# crop images to their 256*256 counterparts
-	cropped_imgs = []
-	cropped_targets = []
+    # crop images to their 256*256 counterparts
+    cropped_imgs = []
+    cropped_targets = []
 
-	for i in range(end_validation):
-	    cropped_img, k, l = img_rnd_crop(imgs[i], 256, 256)
-	    cropped_target, _, _ = img_rnd_crop(grounds[i], 256, 256, k, l)
-	    cropped_imgs.append(cropped_img)
-	    cropped_targets.append(cropped_target)
+    for i in range(end_validation):
+        cropped_img, k, l = img_rnd_crop(imgs[i], 256, 256)
+        cropped_target, _, _ = img_rnd_crop(grounds[i], 256, 256, k, l)
+        cropped_imgs.append(cropped_img)
+        cropped_targets.append(cropped_target)
 
-	x = list(range(end_validation))
-	random.shuffle(x)
+    x = list(range(end_validation))
+    random.shuffle(x)
 
-	train_input = [cropped_imgs[i] for i in x[:end_train]] #normally = 0:1080
-	validation_input = [cropped_imgs[i] for i in x[end_train:end_validation]] #normally = 1080:1200
+    train_input = [cropped_imgs[i] for i in x[:end_train]] #normally = 0:1080
+    validation_input = [cropped_imgs[i] for i in x[end_train:end_validation]] #normally = 1080:1200
 
 
 
-	train_target = [cropped_targets[i] for i in x[:end_train]] #normally = 0:1080
-	validation_target = [cropped_targets[i] for i in x[end_train:end_validation]] #normally = 1080:1200
+    train_target = [cropped_targets[i] for i in x[:end_train]] #normally = 0:1080
+    validation_target = [cropped_targets[i] for i in x[end_train:end_validation]] #normally = 1080:1200
 
-	return train_input, validation_input, train_target, validation_target
+    return train_input, validation_input, train_target, validation_target
 
 
 def load_test():
-	root_dir = "data/test_set_images/"
-	test_images=[]
-	for i in range(1, 51):
-	    image_filename = root_dir + "test_" + str(i) + "/test_" + str(i) + '.png'
-	    test_images.append(np.array(load_image(image_filename)).swapaxes(0,2).swapaxes(1,2))
+    if os.path.exists("ResNet"):
+        root_dir = "ResNet/data/test_set_images/"
+    else:
+        root_dir = "data/test_set_images/"
+    test_images=[]
+    for i in range(1, 51):
+        image_filename = root_dir + "test_" + str(i) + "/test_" + str(i) + '.png'
+        test_images.append(np.array(load_image(image_filename)).swapaxes(0,2).swapaxes(1,2))
 
-	return test_images
+    return test_images
 
 
 def uncrop_256_to_608(imgs):

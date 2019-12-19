@@ -1,6 +1,8 @@
 import numpy as np
 import os, sys
 import shutil
+import matplotlib.image as mpimg
+from skimage import io
 
 # helper functions
 def load_image(infilename):
@@ -46,20 +48,24 @@ def crop_608_to_256(img):
     return [top_left, top_center, top_right, center_left, true_center, center_right, bottom_left, bottom_center, bottom_right]
 ##########################################################
 
-def crop_dataset(save=True):
+def crop_dataset(save):
     # Load the dataset
     root_dir = "./dataset/training/"
 
     image_dir = root_dir + "images/"
-    files = os.listdir(image_dir)
+    try:
+        files = os.listdir(image_dir)
+    except:
+        print("Seems like the dataset is not present, please download it and put it in the /dataset/ folder as documented in README.md")
+        raise SystemExit
+        
     n = min(100, len(files)) # Load maximum 100 images
-    print("Loading " + str(n) + " images")
     imgs = img_float_to_uint8([load_image(image_dir + files[i]) for i in range(n)])
+        
 
     image_dir = root_dir + "groundtruth/"
     files = os.listdir(image_dir)
     n = min(100, len(files)) # Load maximum 100 images
-    print("Loading " + str(n) + " images")
     gts = img_float_to_uint8([load_image(image_dir + files[i]) for i in range(n)])
 
     root_dir = "./dataset/test_set_images/"
@@ -103,11 +109,13 @@ def crop_dataset(save=True):
         png_dataset_to_tif(target_crop, './UNET/data/train/label')
         png_dataset_to_tif(test_crop, './UNET/data/test')
         
-    # save data to ResNet. Saved data is not cropped because ResNet will crop the data itself
-    if save:
-        shutil.rmtree('./ResNet/data') # remove folder because copytree destination must not exist
-        shutil.copytree('./dataset/', './ResNet/data/')
+        # save data to ResNet. Saved data is not cropped because ResNet will crop the data itself
+        path = './ResNet/data'
+        if os.path.exists(path):
+            shutil.rmtree(path) # remove folder because copytree destination must not exist
+        shutil.copytree('./dataset/', path)
     
     return train_input_crop, target_crop, test_crop
 
-crop_dataset()
+if __name__ == "__main__":
+    crop_dataset(True)

@@ -46,7 +46,7 @@ This will generate the cropped and segmented dataset and put it in the correspon
 
 Each net has a specific exectuable in their own folder:
 * [ResNet/run_resnet.py](ResNet/run.py) for ResNet
-* [UNET/run_unet.py](UNET/run_unet.py) for unet
+* [UNET/unet_run.py](UNET/unet_run.py) for unet
 
 The global executable [run.py](run.py) will generate the test outputs for the best results we could get through all of our tests of the two nets.
 

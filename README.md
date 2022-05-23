@@ -62,7 +62,7 @@ To get our best results
 
 ## Authors
 
-* **Rémi Clerc**  - [Minauras](https://github.com/Minauras)
+* **Nara Clerc**  - [Minauras](https://github.com/Minauras)
 * **Jonas Morin** - [Jono711](https://github.com/Jono711)
 * **Jordan Metz** - [metzj](https://github.com/metzj)
 
